@@ -16,6 +16,7 @@ def basic (df):
 def basic_col (df,column,Issues):
     print(df[column].head())
     print(df[column].shape)
+    print(df[column].describe())
     df[column]=df[column].astype("string").str.strip().str.upper()
     print(df[column].value_counts())
     dup= df[column].duplicated().sum()
@@ -28,14 +29,17 @@ def basic_col (df,column,Issues):
         print(df.loc[df.isna()])
 
 def numeric (df,column,Issues):
-    print(df.shape)
-    print(df.describe())
+    print(df[column].shape)
+    print(df[column].describe())
     mask_negativos=df[column]<0
+    nuls=df[column].isna().sum()
+    print("NULOS",nuls)
     print("NEGATIVOS", mask_negativos.sum())
     print(df.loc[mask_negativos])
     if mask_negativos.sum()>0:
        Issues[f"{column}_negativos"] =  df.loc[mask_negativos].copy()   
-    print(df[column].min())           
+    print("MIN",df[column].min())
+    print("MAX",df[column].max())           
                 
 def mask(df,column,pattern,Issues):
     mask_valid=df[column].astype(str).str.match(pattern, na=False)
@@ -52,7 +56,10 @@ def fecha (df,column):
     invalid= df[column].isna().sum()
     print("FECHAS INVALIDAS", invalid)
     print(df[column].loc[invalid])
-    print("fechas_ok")
+    if invalid>0:
+        print("NO VALIDAS",invalid)
+    else:
+        print("VALIDAS")
     
 def export_issues(Issues, ISSUES):
 

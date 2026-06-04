@@ -16,37 +16,19 @@ for file in CSV_FILES:
     
 customers=datasets["olist_customers_dataset"].copy()
 geolocation=datasets["olist_geolocation_dataset"].copy()
-#items=datasets["olist_order_items_dataset"].copy() 
-#payments=datasets["olist_order_payments_dataset"].copy() 
-#reviews=datasets["olist_order_reviews_dataset"].copy() 
-#orders=datasets["olist_orders_dataset"].copy() 
-#products=datasets["olist_products_dataset"].copy() 
-#sellers=datasets["olist_sellers_dataset"].copy()   
-#category=datasets["product_category_name_translation"].copy() 
+items=datasets["olist_order_items_dataset"].copy() 
+payments=datasets["olist_order_payments_dataset"].copy() 
+reviews=datasets["olist_order_reviews_dataset"].copy() 
+orders=datasets["olist_orders_dataset"].copy() 
+products=datasets["olist_products_dataset"].copy() 
+sellers=datasets["olist_sellers_dataset"].copy()   
+category=datasets["product_category_name_translation"].copy() 
 
+pd.set_option("display.max_columns", None)
 
-
-
-
-basic(geolocation)
-print(geolocation["geolocation_zip_code_prefix"].value_counts())
-mask(geolocation,"geolocation_zip_code_prefix",r"^\d{4,5}$",Issues)
-basic_col(geolocation,"geolocation_lat",Issues)
-print(geolocation["geolocation_lat"].head())
-print(geolocation["geolocation_lng"].head())
-geolocation["geolocation_lat"] = pd.to_numeric(geolocation["geolocation_lat"], errors="coerce")
-
-mask_valid = ((geolocation["geolocation_lat"] < 0) &(geolocation["geolocation_lng"] < 0))
-
-print(mask_valid.sum())
-print((~mask_valid).sum()) 
-lat_numeric = pd.to_numeric(geolocation["geolocation_lat"],errors="coerce")
-mask_invalid = lat_numeric.isna()
-print(mask_invalid.sum())   
-print(geolocation.loc[geolocation["geolocation_lat"]>0])  
-print(
-    geolocation.loc[
-        geolocation["geolocation_lat"] > 0
-    ].shape
-)
-Issues["geolocalizacion_incorrecta"]=geolocation.loc[~mask_valid].copy()
+print(payments["order_id"].nunique())
+print(payments["order_id"].duplicated().sum())
+print(payments.loc[payments["order_id"].duplicated()])
+print(payments.loc[payments["order_id"]=="683bf306149bb869980b68d48a1bd6ab"])
+print(payments.loc[payments["order_id"]=="2cbcb371aee438c59b722a21d83597e0"])
+print(payments.loc[payments["order_id"]=="31bc09fdbd701a7a4f9b55b5955b8687"])
