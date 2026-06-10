@@ -139,6 +139,7 @@ def clean_reviews (reviews):
     print(mask_review.sum())
     Issues["review_answer_before_creation"] = reviews.loc[mask_review].copy()
     reviews = reviews.loc[~mask_review].copy()
+    return reviews
 
 
 #----------------
