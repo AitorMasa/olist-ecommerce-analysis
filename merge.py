@@ -2,15 +2,7 @@ import pandas as pd
 
 from config import CLEAN
 
-customers=pd.read_csv(CLEAN/"customers_clean.csv")
-geolocation=pd.read_csv(CLEAN/"geolocation_clean.csv")
-items=pd.read_csv(CLEAN/"items_clean.csv")
-payments=pd.read_csv(CLEAN/"payments_clean.csv")
-reviews=pd.read_csv(CLEAN/"reviews_clean.csv") 
-products=pd.read_csv(CLEAN/"products_clean.csv" )
-orders=pd.read_csv(CLEAN/"orders_clean.csv" )
-sellers=pd.read_csv(CLEAN/"sellers_clean.csv" )
-category=pd.read_csv(CLEAN/"category_clean.csv")
+
 
 def merge(items, orders,products,sellers,customers,category,reviews,payments):
     print(items.shape)
@@ -82,20 +74,6 @@ def merge(items, orders,products,sellers,customers,category,reviews,payments):
     
     return df_total, orders_unique
 
-print(payments["payment_value"].dtype)
 
-print(payments["payment_value"].describe())
-
-print(
-    payments["payment_value"]
-    .sort_values()
-    .head(20)
-)
-
-print(
-    payments["payment_value"]
-    .sort_values(ascending=False)
-    .head(20)
-)
 
                  

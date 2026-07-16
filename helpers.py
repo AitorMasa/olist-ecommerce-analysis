@@ -64,14 +64,8 @@ def fecha (df,column):
 def export_issues(Issues, ISSUES):
 
     print("EXPORTANDO A:", ISSUES)
-
     for nombre, df_issue in Issues.items():
-
         print("GUARDANDO:", nombre)
-
-        df_issue.to_csv(
-            ISSUES / f"{nombre}.csv",
-            index=False
-        )  
+        df_issue.to_csv(ISSUES / f"{nombre}.csv",index=False)  
     
-print("helpers_cargados")   
+ 

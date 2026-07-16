@@ -1,13 +1,6 @@
 import pandas as pd
 from config import CLEAN
 
-CSV_FILES = "total_dataset.csv"
-
-total_dataset=pd.read_csv(CLEAN / "total_dataset.csv")
-
-dataset={}
-
-
 # ¿Cómo ha evolucionado la facturación mes a mes?
 def facturacion_evolucion (df):
     df = df.copy()
