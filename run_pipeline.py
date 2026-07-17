@@ -1,8 +1,10 @@
 import pandas as pd
 from config import RAW,CLEAN,ISSUES
-from cleaning import*
-from kpi import*
-from merge import*
+from cleaning import (Issues,clean_customers,clean_geolocation,clean_items,clean_payments,clean_reviews,
+                      clean_orders,clean_products,clean_sellers,clean_category)
+from kpi import (mejores_productos,producto_mas_ventas,facturacion_evolucion,mejores_clientes,ingreso_medio_por_cliente,
+                top_20_clientes,facturacion_por_estado,clientes_mas_pedidos,operaciones_canceladas,clientes_cancelaciones)
+from merge import merge
 from helpers import export_issues
 
 CSV_FILES=["olist_customers_dataset.csv","olist_geolocation_dataset.csv","olist_order_items_dataset.csv",
@@ -14,7 +16,8 @@ datasets={}
 for file in CSV_FILES:
     nombre=file.replace(".csv","")
     datasets[nombre]=pd.read_csv(RAW/file)
-    
+
+print("[1/7]  Loading raw dataset...")    
 customers=datasets["olist_customers_dataset"].copy()
 geolocation=datasets["olist_geolocation_dataset"].copy()
 items=datasets["olist_order_items_dataset"].copy() 
@@ -28,6 +31,7 @@ category=datasets["product_category_name_translation"].copy()
 
 #-CLEANING---------------
 
+print("[2/7]  Cleaning dataset...")  
 customers = clean_customers(customers)
 geolocation = clean_geolocation(geolocation)
 items = clean_items(items)
@@ -40,6 +44,7 @@ category = clean_category(category)
 
 #-SAVE CLEAN DATASETS--------------
 
+print("[3/7]  Saving cleaned datasets...")  
 customers.to_csv(CLEAN/"customers_clean.csv", index=False)
 geolocation.to_csv(CLEAN/"geolocation_clean.csv", index=False)
 items.to_csv(CLEAN/"items_clean.csv", index=False)
@@ -52,16 +57,18 @@ category.to_csv(CLEAN/"category_clean.csv", index=False)
 
 #-EXPORT QUALITY ISSUES---------------
 
+print("[4/7]  Exporting issues...")  
 export_issues(Issues,ISSUES)
 
 
 #-MERGE---------------
 
+print("[5/7]  Merging datasets...")  
 df_total, orders_unique = merge(items, orders,products,sellers,customers,category,reviews,payments)
 
 #-KPI--------------------
 
-
+print("[6/7]  Calculating  KPIs...")  
 print("mejores_productos")
 print(mejores_productos(df_total))
 
@@ -91,5 +98,12 @@ print(operaciones_canceladas(orders_unique))
 
 print("clientes_cancelaciones")
 print(clientes_cancelaciones(orders_unique))
+
+#print("Orders raw:", orders["order_id"].nunique())
+#print("Orders unique:", orders_unique["order_id"].nunique())
+#print("Items:", len(items))
+#print("Total dataset:", len(df_total))
+
+print("[7/7]  Pipeline completed successfully.")  
 
 
