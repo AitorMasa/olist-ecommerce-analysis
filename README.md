@@ -168,6 +168,11 @@ python run_pipeline.py
 
 The pipeline creates or updates the cleaned datasets in `Clean` and the detected exceptions in `Issues`.
 
+## AI assistance and authorship
+
+The Python data-cleaning pipeline was manually written, tested and progressively refactored by the author. The Power BI report was also built manually without an autonomous coding agent.
+
+AI was used as a learning assistant for technical explanations, code review, debugging suggestions, KPI selection, visual design and Power BI troubleshooting.
 ## What I Learned
 
 This was my first large multi-table analytics project and helped me move from isolated exercises to a reproducible end-to-end workflow. The main skills developed were data cleaning, validation, multi-table joins, issue traceability, KPI design, pipeline organization and interactive dashboard development in Power BI.
