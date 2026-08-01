@@ -1,5 +1,4 @@
 import pandas as pd
-from config import CLEAN
 
 def merge(items, orders,products,sellers,customers,category,reviews,payments):
     #print(items.shape)
@@ -83,8 +82,6 @@ def merge(items, orders,products,sellers,customers,category,reviews,payments):
         how="left"
     )
 )
-    df_total.to_csv(CLEAN/"total_dataset.csv",index=False)
-    orders_unique.to_csv(CLEAN / "orders_unique.csv",index=False)
     
     return df_total, orders_unique
 

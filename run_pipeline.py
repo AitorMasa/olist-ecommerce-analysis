@@ -1,17 +1,16 @@
 import pandas as pd
-from config import RAW,CLEAN,ISSUES
-from cleaning import (Issues,clean_customers,clean_geolocation,clean_items,clean_payments,clean_reviews,
+from config import RAW,CLEAN,ISSUES,KPI,CSV_FILES
+from cleaning import (clean_customers,clean_geolocation,clean_items,clean_payments,clean_reviews,
                       clean_orders,clean_products,clean_sellers,clean_category)
 from kpi import (mejores_productos,producto_mas_ventas,facturacion_evolucion,mejores_clientes,ingreso_medio_por_cliente,
                 top_20_clientes,facturacion_por_estado,clientes_mas_pedidos,operaciones_canceladas,clientes_cancelaciones)
 from merge import merge
 from helpers import export_issues
 
-CSV_FILES=["olist_customers_dataset.csv","olist_geolocation_dataset.csv","olist_order_items_dataset.csv",
-           "olist_order_payments_dataset.csv","olist_order_reviews_dataset.csv","olist_orders_dataset.csv",
-           "olist_products_dataset.csv","olist_sellers_dataset.csv","product_category_name_translation.csv"]
+
 
 datasets={}
+Issues={}
 
 for file in CSV_FILES:
     nombre=file.replace(".csv","")
@@ -63,12 +62,15 @@ export_issues(Issues,ISSUES)
 
 #-MERGE---------------
 
-print("[5/7]  Merging datasets...")  
+print("[5/7]  Merging and saving datasets...")  
 df_total, orders_unique = merge(items, orders,products,sellers,customers,category,reviews,payments)
+
+df_total.to_csv(CLEAN / "total_dataset.csv", index=False)
+orders_unique.to_csv(CLEAN / "orders_unique.csv", index=False)
 
 #-KPI--------------------
 
-print("[6/7]  Calculating  KPIs...")  
+print("[6/7]  Calculating  KPIs and saving results...")  
 print("mejores_productos")
 print(mejores_productos(df_total))
 
@@ -99,6 +101,27 @@ print(operaciones_canceladas(orders_unique))
 print("clientes_cancelaciones")
 print(clientes_cancelaciones(orders_unique))
 
+resultados_kpi = {
+    "mejores_productos": mejores_productos(df_total),
+    "producto_mas_ventas": producto_mas_ventas(df_total),
+    "facturacion_evolucion": facturacion_evolucion(orders_unique),
+    "mejores_clientes": mejores_clientes(orders_unique),
+    "ingreso_medio_por_cliente": ingreso_medio_por_cliente(orders_unique),
+    "top_20_clientes": top_20_clientes(orders_unique),
+    "facturacion_por_estado": facturacion_por_estado(orders_unique),
+    "clientes_mas_pedidos": clientes_mas_pedidos(orders_unique),
+    "operaciones_canceladas": operaciones_canceladas(orders_unique),
+    "clientes_cancelaciones": clientes_cancelaciones(orders_unique),
+}
+
+
+for nombre, resultado in resultados_kpi.items():
+
+    if not isinstance(resultado, pd.DataFrame):
+        resultado = pd.DataFrame([resultado])
+
+    resultado.to_csv(KPI / f"{nombre}.csv", index=True)
+    
 #print("Orders raw:", orders["order_id"].nunique())
 #print("Orders unique:", orders_unique["order_id"].nunique())
 #print("Items:", len(items))

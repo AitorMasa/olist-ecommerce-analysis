@@ -1,5 +1,4 @@
 import pandas as pd
-from config import CLEAN
 
 # ¿Cómo ha evolucionado la facturación mes a mes?
 def facturacion_evolucion (df):
@@ -76,7 +75,7 @@ def clientes_mas_pedidos (df):
 # ¿Qué productos venden más unidades?
 def producto_mas_ventas (df):
     
-    resultado=df["product_id"].value_counts()
+    resultado=(df["product_id"].value_counts())
     #print("productos con ams unidades vendidas",prod)
     return resultado
 
@@ -123,3 +122,5 @@ def top_20_facturacion (df):
     ).sort_values(by="factu",ascending=False).head(20))
     #print(resultado)
     return resultado
+
+

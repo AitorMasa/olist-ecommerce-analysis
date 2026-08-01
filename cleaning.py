@@ -1,11 +1,7 @@
 import pandas as pd
-
-from config import RAW,CLEAN,ISSUES
 from helpers import basic_col,numeric,fecha,mask
 
-
 Issues={}
-
 
 def clean_customers (df):
     

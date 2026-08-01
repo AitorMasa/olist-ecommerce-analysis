@@ -1,14 +1,13 @@
 from pathlib import Path
-import pandas as pd
-
 
 ROOT =Path(__file__).resolve().parent
 
 CLEAN = ROOT / "Clean" 
 RAW = ROOT / "Raw"
 ISSUES = ROOT / "Issues"
+KPI = ROOT / "KPI"
 
-for folder in [CLEAN,RAW,ISSUES]:
+for folder in [CLEAN,RAW,ISSUES,KPI]:
     folder.mkdir(parents=True, exist_ok=True)
 
 CSV_FILES=["olist_customers_dataset.csv","olist_geolocation_dataset.csv","olist_order_items_dataset.csv",
@@ -17,6 +16,6 @@ CSV_FILES=["olist_customers_dataset.csv","olist_geolocation_dataset.csv","olist_
 
 
 
-Issues={}
+
 
      
